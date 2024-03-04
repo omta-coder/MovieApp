@@ -31,6 +31,7 @@ exports.getAllusermovie = async (req, res) =>{
 
     const page = req.query.page || 1;
     const search = req.query.search || "";
+    const sort =  req.query.sort || "";
     const ITEM_PER_PAGE = 2;
 
     const query = {
@@ -47,6 +48,7 @@ exports.getAllusermovie = async (req, res) =>{
         const allusermoviesData = await movieDB.find(query)
         .limit(ITEM_PER_PAGE)
         .skip(skip)
+        .sort({_id:sort == "new"? -1 : 1})
 
         const pageCount =  Math.ceil(allusermovieCount / ITEM_PER_PAGE);
 
