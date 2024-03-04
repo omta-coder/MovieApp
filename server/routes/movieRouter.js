@@ -10,6 +10,11 @@ router.post(
   [userauthenticate, movieupload.single("image")],
   moviescontrollers.createmovie
 );
-router.get("/getallmovie",moviescontrollers.getAllusermovie);
+router.get("/getallmovie", moviescontrollers.getAllusermovie);
+router.patch(
+  "/update/:id",
+  [userauthenticate, movieupload.single("image")],
+  moviescontrollers.updatemovies
+);
 
 module.exports = router;

@@ -5,6 +5,7 @@ const cloudinary = require("../cloudinary/cloudinaryConfig");
 exports.createmovie = async(req,res)=>{
     const file = req?.file ? req?.file?.path : "";
     const {moviename,publishyear} = req.body;
+
     if(!file || !moviename || !publishyear){
         res.status(400).json({error:"All fields are required!"})
     }else{
@@ -60,5 +61,33 @@ exports.getAllusermovie = async (req, res) =>{
         });
     } catch (error) {
         res.status(400).json({error:error}); 
+    }
+}
+
+// updatemovies
+exports.updatemovies = async(req,res)=>{
+    const {id} = req.params;
+    const file = req?.file ? req?.file?.path : "";
+    const { moviename, publishyear,image } = req.body;
+    console.log(moviename, publishyear,image);
+    var upload;
+
+    try {
+        
+        if(file){
+            upload = await cloudinary?.uploader?.upload(file);
+        }
+
+        let dynamicImg = file ? upload?.secure_url : image
+
+        const moviesUpdate = await movieDB.findByIdAndUpdate({_id:id},{
+            userid: req?.userMainId, moviename, image:dynamicImg, publishyear
+        },{new:true});
+
+        await moviesUpdate.save();
+
+        res.status(200).json({message:"movie sucessfully update",moviesUpdate})
+    } catch (error) {
+        res.status(400).json({ error: error })
     }
 }
