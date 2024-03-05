@@ -69,7 +69,7 @@ exports.updatemovies = async(req,res)=>{
     const {id} = req.params;
     const file = req?.file ? req?.file?.path : "";
     const { moviename, publishyear,image } = req.body;
-    console.log(moviename, publishyear,image);
+    
     var upload;
 
     try {
@@ -87,6 +87,18 @@ exports.updatemovies = async(req,res)=>{
         await moviesUpdate.save();
 
         res.status(200).json({message:"movie sucessfully update",moviesUpdate})
+    } catch (error) {
+        res.status(400).json({ error: error })
+    }
+}
+
+// deleteMovie
+exports.deleteMovie = async(req,res)=>{
+    const { id } = req.params;
+
+    try {
+        const deleteMovieData = await movieDB.findByIdAndDelete({_id:id});
+        res.status(200).json({message:"Movies sucessfully Delete",deleteMovieData});
     } catch (error) {
         res.status(400).json({ error: error })
     }

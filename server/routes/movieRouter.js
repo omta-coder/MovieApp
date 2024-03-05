@@ -16,5 +16,6 @@ router.patch(
   [userauthenticate, movieupload.single("image")],
   moviescontrollers.updatemovies
 );
+router.delete("/delete/:id",userauthenticate,moviescontrollers.deleteMovie)
 
 module.exports = router;
